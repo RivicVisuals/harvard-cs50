@@ -11,13 +11,13 @@
 
 #include "dictionary.h"
 
+#define CHARS 27
 
 // Represents a node in a hash table
 typedef struct node
 {
-    char word[LENGTH + 1];
     bool end;
-    struct node *next[26];
+    struct node *next[CHARS];
 }
 node;
 
@@ -152,7 +152,7 @@ void destroy(node *list)
     // recursive case
     else
     {
-        for (int i = 0; i < 26; i++)
+        for (int i = 0; i < CHARS; i++)
         {
             // use a traversal pointer
             node *tmp = list->next[i];
