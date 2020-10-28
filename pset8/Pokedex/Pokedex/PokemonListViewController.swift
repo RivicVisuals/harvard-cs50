@@ -7,8 +7,20 @@ class PokemonListViewController: UITableViewController {
     // Search
     let searchController = UISearchController(searchResultsController: nil)
     
+    // Helpers:
+    // Capitalize first letter of string
     func capitalize(text: String) -> String {
         return text.prefix(1).uppercased() + text.dropFirst()
+    }
+    
+    // returns true if the search bar is empty
+    var isSearchBarEmpty: Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    // returns true if filtering is acitve
+    var isFiltering: Bool {
+        return !isSearchBarEmpty
     }
     
     override func viewDidLoad() {
@@ -36,8 +48,8 @@ class PokemonListViewController: UITableViewController {
         }.resume()
         
         // Search
-        navigationItem.searchController = searchController
-        searchController.searchBar.delegate = self // activate the search results updater from the extension below
+        navigationItem.searchController = searchController // use a separate controller to manage searching & displaying the results
+        searchController.searchResultsUpdater = self // activate the search results updater from the extension below
         searchController.obscuresBackgroundDuringPresentation = false // so user can click on search result
         definesPresentationContext = true // mark the ViewController as obscured
     }
@@ -47,12 +59,15 @@ class PokemonListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pokemon.count
+        return isFiltering ? filteredPokemon.count : pokemon.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath)
-        cell.textLabel?.text = capitalize(text: pokemon[indexPath.row].name)
+        
+        let p: PokemonListResult = isFiltering ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
+        cell.textLabel?.text = capitalize(text: p.name)
+        
         return cell
     }
     
@@ -65,9 +80,13 @@ class PokemonListViewController: UITableViewController {
     }
 }
 
-// MARK: - UISearchResultsUpdating
-extension PokemonListViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("change")
+// MARK: - UISearchBarDelegate
+extension PokemonListViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filteredPokemon = pokemon.filter {(pokemon: PokemonListResult) -> Bool in
+            return pokemon.name.lowercased().contains(searchController.searchBar.text!.lowercased())
+    }
+        
+        tableView.reloadData()
     }
 }
