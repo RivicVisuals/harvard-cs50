@@ -76,6 +76,7 @@ class PokemonListViewController: UITableViewController {
                 let destination = segue.destination as? PokemonViewController,
                 let index = tableView.indexPathForSelectedRow?.row {
             destination.url = pokemon[index].url
+            destination.name = pokemon[index].name // Pass in the name of the chosen pokemon in order to be able to read from the mapped true / false values for key of pokemon.name
         }
     }
 }

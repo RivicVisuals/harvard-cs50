@@ -89,7 +89,15 @@
                         <viewLayoutGuide key="safeArea" id="cVc-In-IFv"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <navigationItem key="navigationItem" id="y7C-ya-G4D">
+                        <barButtonItem key="rightBarButtonItem" title="Catch" style="plain" id="J8x-WX-Ngb">
+                            <connections>
+                                <action selector="toggleCatch" destination="yFp-uv-eEo" id="bSN-Xx-HI6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="catchButton" destination="J8x-WX-Ngb" id="r1h-qy-N8b"/>
                         <outlet property="nameLabel" destination="Zti-lO-HCX" id="4yz-Df-XpM"/>
                         <outlet property="numberLabel" destination="Sja-25-iqf" id="cj5-fb-cuF"/>
                         <outlet property="type1Label" destination="pSm-0Z-rVe" id="OOi-5I-FB3"/>

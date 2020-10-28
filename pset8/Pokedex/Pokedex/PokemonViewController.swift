@@ -2,12 +2,26 @@ import UIKit
 
 class PokemonViewController: UIViewController {
     var url: String!
+    var name: String!
+    var caughtStatus: Bool!
 
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var numberLabel: UILabel!
     @IBOutlet var type1Label: UILabel!
     @IBOutlet var type2Label: UILabel!
-
+    @IBOutlet var catchButton: UIBarButtonItem!
+    
+    @IBAction func toggleCatch() {
+        catchButton.possibleTitles = ["Catch", "Add"]
+        
+        // invert current caughtStatus
+        caughtStatus = !caughtStatus
+        
+        // save the state of the caughtStatus
+        UserDefaults.standard.setValue(caughtStatus, forKey: name)
+        catchButton.title = caughtStatus ? "Release" : "Catch"
+    }
+    
     func capitalize(text: String) -> String {
         return text.prefix(1).uppercased() + text.dropFirst()
     }
@@ -50,5 +64,9 @@ class PokemonViewController: UIViewController {
                 print(error)
             }
         }.resume()
+        
+        // read from the map of <pokemon.name : caught?> and set the button accordingly
+        caughtStatus = UserDefaults.standard.bool(forKey: name)
+        catchButton.title = caughtStatus ? "Release" : "Catch"
     }
 }
