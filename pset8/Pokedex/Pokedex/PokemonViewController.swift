@@ -20,7 +20,12 @@ class PokemonViewController: UIViewController {
         
         // save the state of the caughtStatus
         UserDefaults.standard.setValue(caughtStatus, forKey: name)
+        
+        // redraw UI
         catchButton.title = caughtStatus ? "Release" : "Catch"
+        UIView.animate(withDuration: 0.4) {
+            self.sprite.layer.shadowOpacity = self.caughtStatus ? 0.5 : 0
+        }
     }
     
     func capitalize(text: String) -> String {
@@ -35,6 +40,9 @@ class PokemonViewController: UIViewController {
         type1Label.text = ""
         type2Label.text = ""
         sprite.image = nil
+        sprite.layer.shadowColor = UIColor.systemTeal.cgColor
+        sprite.layer.shadowOffset = .zero
+        sprite.layer.shadowRadius = 4
         loadPokemon()
     }
 
@@ -75,6 +83,7 @@ class PokemonViewController: UIViewController {
         // read from the map of <pokemon.name : caught?> and set the button accordingly
         caughtStatus = UserDefaults.standard.bool(forKey: name)
         catchButton.title = caughtStatus ? "Release" : "Catch"
+        sprite.layer.shadowOpacity = caughtStatus ? 0.5 : 0
     }
 }
 
