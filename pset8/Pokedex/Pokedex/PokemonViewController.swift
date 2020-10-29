@@ -1,8 +1,10 @@
 import UIKit
+import Foundation
 
 class PokemonViewController: UIViewController {
     var url: String!
     var name: String!
+    var id: Int!
     var caughtStatus: Bool!
 
     @IBOutlet var nameLabel: UILabel!
@@ -10,6 +12,7 @@ class PokemonViewController: UIViewController {
     @IBOutlet var type1Label: UILabel!
     @IBOutlet var type2Label: UILabel!
     @IBOutlet var sprite: UIImageView!
+    @IBOutlet var descriptionText: UITextView!
     @IBOutlet var catchButton: UIBarButtonItem!
     
     @IBAction func toggleCatch() {
@@ -43,6 +46,7 @@ class PokemonViewController: UIViewController {
         sprite.layer.shadowColor = UIColor.systemTeal.cgColor
         sprite.layer.shadowOffset = .zero
         sprite.layer.shadowRadius = 4
+        descriptionText.text = ""
         loadPokemon()
     }
 
@@ -58,6 +62,10 @@ class PokemonViewController: UIViewController {
                     self.navigationItem.title = self.capitalize(text: result.name)
                     self.nameLabel.text = self.capitalize(text: result.name)
                     self.numberLabel.text = String(format: "#%03d", result.id)
+                    // store the Pokemon's ID for future reference
+                    self.id = result.id
+                    self.loadDescription()
+                    
                     
                     // Try and get the URL of the front default sprite
                     if let spriteURL = result.sprites.front_default {
@@ -84,6 +92,33 @@ class PokemonViewController: UIViewController {
         caughtStatus = UserDefaults.standard.bool(forKey: name)
         catchButton.title = caughtStatus ? "Release" : "Catch"
         sprite.layer.shadowOpacity = caughtStatus ? 0.5 : 0
+    }
+    
+    func loadDescription() {
+        // construct the separate API URL for downloading the description.
+        guard let id = self.id else {
+            return
+        }
+        let descURL: String = "https://pokeapi.co/api/v2/pokemon-species/\(id)/"
+        
+        URLSession.shared.dataTask(with: URL(string: descURL)!) { (data, response, error) in
+            guard let data = data else {
+                return
+            }
+
+            do {
+                let result = try JSONDecoder().decode(PokemonDescription.self, from: data)
+                DispatchQueue.main.async {
+                    self.descriptionText.text = result.flavor_text_entries[0].flavor_text
+                        .replacingOccurrences(of: #"\f"#, with: "\n", options: .regularExpression) // get rid of the damn form feeds
+                        .components(separatedBy: CharacterSet(charactersIn: "\n\r")) // sanitize line breaks from original texts
+                        .joined(separator: " ")
+                }
+            }
+            catch let error {
+                print(error)
+            }
+        }.resume()
     }
 }
 
