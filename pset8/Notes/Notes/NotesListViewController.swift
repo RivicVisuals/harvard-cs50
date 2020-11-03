@@ -32,6 +32,24 @@ class NotesListViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .destructive, title: nil, handler: {
+            (_, _, completion) in
+            NoteManager.shared.deleteNote(note: self.notes[indexPath.row])
+            self.reload()
+            completion(true)
+        })
+        if #available(iOS 13.0, *) {
+            action.image = UIImage(systemName: "trash")
+        } else {
+            action.title = "Delete"
+        }
+        
+        let config = UISwipeActionsConfiguration(actions: [action])
+        return config
+    }
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "NoteSegue",
                 let destination = segue.destination as? NoteViewController,

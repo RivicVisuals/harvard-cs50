@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="laL-R9-72D">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="laL-R9-72D">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,14 +18,14 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="NoteCell" textLabel="1W1-6y-AK3" style="IBUITableViewCellStyleDefault" id="3GA-hx-3NX">
-                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3GA-hx-3NX" id="lir-36-Ucx">
-                                    <rect key="frame" x="0.0" y="0.0" width="376" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="383" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1W1-6y-AK3">
-                                            <rect key="frame" x="20" y="0.0" width="356" height="43.5"/>
+                                            <rect key="frame" x="20" y="0.0" width="355" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -57,7 +55,7 @@
             </objects>
             <point key="canvasLocation" x="287" y="99"/>
         </scene>
-        <!--Note View Controller-->
+        <!--Title-->
         <scene sceneID="7so-j2-Gc2">
             <objects>
                 <viewController id="Vbt-1M-dNT" customClass="NoteViewController" customModule="Notes" customModuleProvider="target" sceneMemberID="viewController">
@@ -72,6 +70,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Csg-Sz-fWf"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="aWQ-If-xl0" firstAttribute="trailing" secondItem="Csg-Sz-fWf" secondAttribute="trailing" id="SLZ-j1-45o"/>
@@ -79,8 +78,14 @@
                             <constraint firstItem="aWQ-If-xl0" firstAttribute="top" secondItem="Csg-Sz-fWf" secondAttribute="top" id="X90-An-gyy"/>
                             <constraint firstItem="aWQ-If-xl0" firstAttribute="leading" secondItem="Csg-Sz-fWf" secondAttribute="leading" id="y06-87-Kml"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Csg-Sz-fWf"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Title" id="OWI-Lq-Cbu">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="JsG-Ov-sum">
+                            <connections>
+                                <action selector="deleteNote:" destination="Vbt-1M-dNT" id="FB0-bv-fVa"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="contentTextView" destination="aWQ-If-xl0" id="Lvs-su-VYc"/>
                     </connections>

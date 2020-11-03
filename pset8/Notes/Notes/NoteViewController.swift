@@ -2,6 +2,10 @@ import UIKit
 
 class NoteViewController: UIViewController {
     @IBOutlet var contentTextView: UITextView!
+    @IBAction func deleteNote(_ sender: Any) {
+        NoteManager.shared.deleteNote(note: note!)
+        navigationController?.popViewController(animated: true)
+    }
     
     var note: Note? = nil
     
