@@ -36,6 +36,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         filter?.setValue(CIImage(image: original), forKey: kCIInputImageKey)
         display(filter: filter!)
     }
+    
+    @IBAction func applyComic() {
+        if original == nil {
+            return
+        }
+        
+        let filter = CIFilter(name: "CIDotScreen")
+        filter?.setValue(CIImage(image: original), forKey: kCIInputImageKey)
+        filter?.setValue(20, forKey: kCIInputWidthKey)
+        filter?.setValue(15, forKey: kCIInputAngleKey)
+        display(filter: filter!)
+    }
 
     @IBAction func choosePhoto(_ sender: UIBarButtonItem) {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
@@ -43,9 +55,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             picker.delegate = self
             picker.sourceType = .photoLibrary
             self.navigationController?.present(picker, animated: true, completion: nil)
+            self.navigationItem.leftBarButtonItem?.isEnabled = true
         }
     }
 
+    @IBAction func savePhoto(_ sender: UIBarButtonItem) {
+        UIImageWriteToSavedPhotosAlbum(imageView.image!, nil, nil, nil)
+    }
+    
     func display(filter: CIFilter) {
         let output = filter.outputImage!
         imageView.image = UIImage(cgImage: self.context.createCGImage(output, from: output.extent)!)
